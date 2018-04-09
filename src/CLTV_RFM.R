@@ -45,7 +45,9 @@ library(dplyr)
 library(plotly)
 py <- plotly()
 
-# Set working directory
+# Set working directory here<>
+setwd("C:/Users/Projects")
+
 # Invoke common data prep functions
 source ("./CLTV_dataPrepFunctions.R")
 # Function getDataFrame(df, startDate, endDate, tIDColName = "ID", tDateColName = "Date", tAmountColName = "Amount") 
@@ -60,7 +62,7 @@ source ("./CLTV_dataPrepFunctions.R")
 # Main program 
 ## 1) Initialization and Data set preperation
 # Set your working directory accordingly
-dir_Input = "C:/Users/Projects"
+#dir_Input = "C:/Users/Projects"
 
 # Import raw data
 setwd(dir_Input)
@@ -123,24 +125,33 @@ pRecency <- getPercentages(Training_df, "Recency")
 pFreq <- getPercentages(Training_df, "Frequency")
 pMonetary <- getPercentages(Training_df, "Monetary")
 
+#Remove NAs if any in these data frames
+pRecency_withoutNAs <- delete.na(pRecency)
+pFreq_withoutNAs <- delete.na(pFreq)
+pMonetary_withoutNAs <- delete.na(pMonetary)
+
 # plot and draw fit curves of Percentage ~ r,f,m
 par( mfrow = c(1, 3), oma = c(0,0,2,0) )  # set canvas for 1 row - 3 columns, with specified outer margin area
-plot(pRecency$Recency, pRecency$Percentage * 100, xlab = "Recency", ylab = "Prob of Purchasing (%)")
-lines(lowess(pRecency$Recency, pRecency$Percentage * 100), col="blue", lty = 2)
-plot(pFreq$Frequency, pFreq$Percentage * 100, xlab = "Frequency", ylab = "Prob of Purchasing (%)")
-lines(lowess(pFreq$Frequency, pFreq$Percentage * 100), col="blue", lty = 2)
-plot(pMonetary$Monetary, pMonetary$Percentage * 100, xlab = "Monetary", ylab = "Prob of Purchasing (%)")
-lines(lowess(pMonetary$Monetary, pMonetary$Percentage * 100), col="blue", lty = 2)
+
+plot(pRecency_withoutNAs$Recency, pRecency_withoutNAs$Percentage * 100, xlab = "Recency", ylab = "Prob of Purchasing (%)")
+lines(lowess(pRecency_withoutNAs$Recency, pRecency_withoutNAs$Percentage * 100), col="blue", lty = 2)
+
+plot(pFreq_withoutNAs$Frequency, pFreq_withoutNAs$Percentage * 100, xlab = "Frequency", ylab = "Prob of Purchasing (%)")
+lines(lowess(pFreq_withoutNAs$Frequency, pFreq_withoutNAs$Percentage * 100), col="blue", lty = 2)
+
+plot(pMonetary_withoutNAs$Monetary, pMonetary_withoutNAs$Percentage * 100, xlab = "Monetary", ylab = "Prob of Purchasing (%)")
+lines(lowess(pMonetary_withoutNAs$Monetary, pMonetary_withoutNAs$Percentage * 100), col="blue", lty = 2)
+
 title("Percentages ~ (Recency, Frequency, Monetary)", y=10, outer=TRUE)
 
 # logistics regression on Purchase Pctg ~ Recency
-r.glm = glm(Percentage~Recency, family = quasibinomial(link = "logit"), data = pRecency)
+r.glm = glm(Percentage~Recency, family = quasibinomial(link = "logit"), data = pRecency_withoutNAs)
 
 # logistics regression on Purchase Pctg ~ Frequency
-f.glm = glm(Percentage~Frequency, family = quasibinomial(link = "logit"), data = pFreq)
+f.glm = glm(Percentage~Frequency, family = quasibinomial(link = "logit"), data = pFreq_withoutNAs)
 
 # logistics regression on Purchase Pctg ~ Monetary
-m.glm = glm(Percentage~Monetary, family = quasibinomial(link = "logit"), data = pMonetary)
+m.glm = glm(Percentage~Monetary, family = quasibinomial(link = "logit"), data = pMonetary_withoutNAs)
 
 par( mfrow = c(1, 1) )
 # Sample reference: Interpreting Logistics Regression: https://stats.idre.ucla.edu/r/dae/logit-regression/
@@ -171,6 +182,7 @@ model = LogReg_Results.Buy_RF
 
 # Cust_Value <- getCLTV(0, 1, 100, 0, 1, 3, 0.02, model)
 Cust_Value <- getCLTV(r, f, Rev, Cost, n, periods, dr, model)
+print(Cust_Value)
 ## End of 5) ============================================================================================
 
 # End of main program ===================================================================================
