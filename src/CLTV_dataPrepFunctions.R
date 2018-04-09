@@ -88,7 +88,7 @@ getDataFrame <- function(df, startDate, endDate, tIDColName = "ID", tDateColName
 # 	A new data frame with 4 new columns of "R_score", "F_score", "M_score", and "Total_score".
 # 
 # ---------------------------------------------------------------------
-getIndepScore <- function(df, r = 5, f = 5, m = 5) {
+getIndepRFMScore <- function(df, r = 5, f = 5, m = 5) {
   if (r <= 0 || f <= 0 || m <= 0) return
   
   # sort data set for Recency with Recency (ascending) - Frequency (descending) - Monetary (descending)
@@ -348,3 +348,12 @@ getCLTV <- function(r, f, rev, cost, n, periods, dr, pModel) {
   return(sum(df$value))
 }
 # END Function: getCLTV() ##############################################################################
+
+# ======================================================================================================
+# Function
+#     delete.na (data frame)
+# Removes NAs from data frame
+delete.na <- function(DF, n=0) {
+  DF[rowSums(is.na(DF)) <= n,]
+}
+# END Function: delete.na() ############################################################################
