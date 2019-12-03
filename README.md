@@ -1,8 +1,9 @@
 # Customer Analytics
 Customer Analytics related solutions using ML approaches
 
-## Key stages of roadmap:
-Customer Acquisition --> Customer Development --> Customer Retention
+## Key Stages of Roadmap:
+
+**Customer Acquisition** --> **Customer Development** --> **Customer Retention**
 
 
 ## Key KPI areas:
