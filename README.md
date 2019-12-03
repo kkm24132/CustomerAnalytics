@@ -5,6 +5,7 @@ Customer Analytics related solutions using ML approaches
 
 **Customer Acquisition** --> **Customer Development** --> **Customer Retention**
 
+![Customer Analytics Journey](/images/CustomerAnalyticsJourney.png)
 
 ## Key KPI areas:
 
