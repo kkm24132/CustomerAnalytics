@@ -16,7 +16,7 @@ Customer Analytics related solutions using ML approaches
 - Transaction Behaviour Analysis
 - Service Request Analysis
 
-## Use Cases
+## ITOps Analytics
 
 Use Case Area           | Description                              | Remarks                                          | Algorithm / Technique |
 ------------------------|------------------------------------------|--------------------------------------------------|-----------------------|
